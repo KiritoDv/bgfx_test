@@ -7,7 +7,7 @@
 
 using namespace std;
 
-void Core::init(void (*init)(), void (*update)()) {
+void Core::init(function<void()> init, function<void()> update) {
     SDL_Window* window = NULL;
 
     if (SDL_Init(SDL_INIT_VIDEO)) {

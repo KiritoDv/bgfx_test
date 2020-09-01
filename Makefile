@@ -3,7 +3,7 @@ CC = g++
 BGFX_DIR = /home/alucherdi/lj/bgfx/bgfx/.build/linux64_gcc/bin/libbgfx-shared-libRelease.so
 BGFX_HEADERS =  -Ibgfx/include -Ibx/include -Ibimg/include
 
-COMPILER_FLAGS = -w
+COMPILER_FLAGS = -w -std=c++11
 LINKER_FLAGS = $(BGFX_DIR) -lSDL2 -lGL -lX11 -lpthread
 
 main : main.o core.o

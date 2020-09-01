@@ -1,4 +1,5 @@
 #include <iostream>
+#include <functional>
 #include "core/core.h"
 
 #include <bgfx/bgfx.h>
@@ -11,7 +12,7 @@ struct PosColorVertex {
     float my;
     float mz;
 
-    uint32_t mabgr;
+    uint32_t m_abgr;
 
     static void init() {
         ms_layout
@@ -24,7 +25,10 @@ struct PosColorVertex {
     static bgfx::VertexLayout ms_layout;
 };
 
+bgfx::VertexLayout PosColorVertex::ms_layout;
+
 int main() {
+
     static PosColorVertex s_cubeVertices[] = {
         { 0.5f,  0.5f,  0.0f, 0xff0000ff },
         { 0.5f,  -0.5f, 0.0f, 0xff0000ff },
@@ -42,14 +46,19 @@ int main() {
 
     auto init = [&]() {
         PosColorVertex::init();
+
         m_vbh = bgfx::createVertexBuffer(
             bgfx::makeRef(s_cubeVertices, sizeof(s_cubeVertices)),
             PosColorVertex::ms_layout
+        );
+
+        m_ibh = bgfx::createIndexBuffer(
+            bgfx::makeRef(s_cubeTriList, sizeof(s_cubeTriList))
         );
     };
 
     auto update = []() {
     };
 
-    Core::init(&init, update);
+    Core::init(init, update);
 }
