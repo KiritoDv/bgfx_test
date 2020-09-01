@@ -1,0 +1,3 @@
+[submodule "libs/bgfx"]
+	path = libs/bgfx
+	url = https://github.com/widberg/bgfx.cmake

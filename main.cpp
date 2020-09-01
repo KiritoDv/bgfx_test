@@ -44,7 +44,7 @@ int main() {
     bgfx::VertexBufferHandle m_vbh;
     bgfx::IndexBufferHandle m_ibh;
 
-    auto init = [&]() {
+    Lambda<> init = [&]() {
         PosColorVertex::init();
 
         m_vbh = bgfx::createVertexBuffer(
@@ -57,7 +57,8 @@ int main() {
         );
     };
 
-    auto update = []() {
+    Lambda<> update = [&]() {
+
     };
 
     Core::init(init, update);
