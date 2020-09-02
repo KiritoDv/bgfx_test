@@ -4,6 +4,8 @@
 
 #include <bgfx/bgfx.h>
 #include <bgfx/platform.h>
+#include <bx/math.h>
+#include <audio/AudioPlayer.h>
 
 using namespace std;
 
@@ -27,7 +29,13 @@ struct PosColorVertex {
 
 bgfx::VertexLayout PosColorVertex::ms_layout;
 
+AudioPlayer a;
+
 int main() {
+
+    a.initDevice();
+
+    a.preloadSound(1, R"(/home/alex/Downloads/test.wav)");
 
     static PosColorVertex s_cubeVertices[] = {
         { 0.5f,  0.5f,  0.0f, 0xff0000ff },
@@ -44,7 +52,7 @@ int main() {
     bgfx::VertexBufferHandle m_vbh;
     bgfx::IndexBufferHandle m_ibh;
 
-    Lambda<> init = [&]() {
+    auto init = [&]() {
         PosColorVertex::init();
 
         m_vbh = bgfx::createVertexBuffer(
@@ -57,7 +65,48 @@ int main() {
         );
     };
 
-    Lambda<> update = [&]() {
+    int counter = 0;
+
+    auto update = [&]() {
+
+        counter++;
+
+        const bx::Vec3 at  = { 0.0f, 0.0f,   0.0f };
+        const bx::Vec3 eye = { 0.0f, 0.0f, 10.0f };
+
+        int WIDTH = 640;
+        int HEIGHT = 480;
+
+        float view[16];
+        bx::mtxLookAt(view, eye, at);
+
+        float proj[16];
+        bx::mtxProj(proj,
+                    60.0f,
+                    float(WIDTH)/float(HEIGHT),
+                    0.1f, 100.0f,
+                    bgfx::getCaps()->homogeneousDepth);
+
+        bgfx::setViewTransform(0, view, proj);
+
+        bgfx::setViewRect(0, 0, 0,
+                          WIDTH,
+                          HEIGHT);
+
+        bgfx::touch(0);
+
+        float mtx[16];
+        bx::mtxRotateZ(mtx, counter / 3 % 360);
+
+        mtx[12] = 0.0f;
+        mtx[13] = 0.0f;
+        mtx[14] = 0.0f;
+
+        bgfx::setTransform(mtx);
+
+        bgfx::setVertexBuffer(0, m_vbh);
+        bgfx::setIndexBuffer(m_ibh);
+        bgfx::setState(BGFX_STATE_DEFAULT);
 
     };
 

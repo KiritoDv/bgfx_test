@@ -14,3 +14,6 @@ target_link_libraries(${PROJECT_NAME} PRIVATE ${SDL2_LIBRARIES})
 
 add_subdirectory(libs/bgfx)
 target_link_libraries(${PROJECT_NAME} PRIVATE bgfx)
+
+add_subdirectory(libs/AudioMoon)
+target_link_libraries(${PROJECT_NAME} PRIVATE AudioMoon)

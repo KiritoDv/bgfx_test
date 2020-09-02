@@ -7,7 +7,7 @@
 
 using namespace std;
 
-void Core::init(Lambda<> init, Lambda<> update) {
+void Core::init(std::function<void()> init, std::function<void()> update) {
     SDL_Window* window = NULL;
 
     if (SDL_Init(SDL_INIT_VIDEO)) {
@@ -15,8 +15,8 @@ void Core::init(Lambda<> init, Lambda<> update) {
     } else {
         window = SDL_CreateWindow(
             "Dungeon Dodge",
-            SDL_WINDOWPOS_UNDEFINED,
-            SDL_WINDOWPOS_UNDEFINED,
+            SDL_WINDOWPOS_CENTERED,
+            SDL_WINDOWPOS_CENTERED,
             640, 480,
             SDL_WINDOW_SHOWN
         );
